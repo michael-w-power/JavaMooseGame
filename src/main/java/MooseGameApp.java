@@ -27,7 +27,7 @@ public class MooseGameApp extends GameApplication {
         settings.setWidth(600);
         settings.setHeight(900);
         settings.setTitle("MooseGame");
-        settings.setVersion("0.2");
+        settings.setVersion("0.3");
         settings.setMenuEnabled(true);
     }
 
@@ -67,8 +67,9 @@ public class MooseGameApp extends GameApplication {
         background2 = spawn("background2");
         player = spawn("player",350,700);
         run(()->spawn("potHole"),Duration.seconds(5));
-        run(()->spawn("moose"),Duration.seconds(10));
-    //run(() -> spawn("moose",900,random(-300,300)), Duration.seconds(10));
+        run(()->spawn("leftMoose"),Duration.seconds(10));
+        run(()->spawn("rightMoose"),Duration.seconds(10));
+
     }
 
     @Override
@@ -78,8 +79,17 @@ public class MooseGameApp extends GameApplication {
             FXGL.getWorldProperties().increment("score", -100);
         });
 
-        onCollisionBegin(EntityType.PLAYER,EntityType.MOOSE, (player, moose) -> {
+        onCollisionBegin(EntityType.PLAYER,EntityType.LEFTMOOSE, (player, moose) -> {
             moose.removeFromWorld();
+
+            FXGL.getWorldProperties().increment("score", -1000);
+            getDialogService().showMessageBox("Game Over. Press OK to exit", getGameController()::exit);
+
+        });
+
+        onCollisionBegin(EntityType.PLAYER,EntityType.RIGHTMOOSE, (player, moose) -> {
+            moose.removeFromWorld();
+
             FXGL.getWorldProperties().increment("score", -1000);
             getDialogService().showMessageBox("Game Over. Press OK to exit", getGameController()::exit);
 
@@ -91,8 +101,12 @@ public class MooseGameApp extends GameApplication {
 
 
         getGameWorld().getEntitiesByType(EntityType.POTHOLE).forEach(pothole -> pothole.translateY(FXGL.getWorldProperties().getInt("speed")*tpf));
-        getGameWorld().getEntitiesByType(EntityType.MOOSE).forEach(moose -> moose.translateY(FXGL.getWorldProperties().getInt("speed")*tpf));
-        getGameWorld().getEntitiesByType(EntityType.MOOSE).forEach(moose -> moose.translateX(-2));
+
+        getGameWorld().getEntitiesByType(EntityType.LEFTMOOSE).forEach(moose -> moose.translateY(FXGL.getWorldProperties().getInt("speed")*tpf));
+        getGameWorld().getEntitiesByType(EntityType.LEFTMOOSE).forEach(moose -> moose.translateX(-2));
+
+        getGameWorld().getEntitiesByType(EntityType.RIGHTMOOSE).forEach(moose -> moose.translateY(FXGL.getWorldProperties().getInt("speed")*tpf));
+        getGameWorld().getEntitiesByType(EntityType.RIGHTMOOSE).forEach(moose -> moose.translateX(2));
 
         background1.translateY(FXGL.getWorldProperties().getInt("speed") * tpf);
         background2.translateY(FXGL.getWorldProperties().getInt("speed") * tpf);

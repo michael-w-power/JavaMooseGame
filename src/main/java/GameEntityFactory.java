@@ -51,13 +51,47 @@ public class GameEntityFactory implements EntityFactory {
                 .build();
     }
 
-    @Spawns("moose")
+    @Spawns("leftMoose")
     public static Entity newMoose(SpawnData data) {
-        AnimatedTexture view = texture("mooseWalkAnimation.png").toAnimatedTexture(10, Duration.seconds(0.5));
+        AnimatedTexture view = texture("mooseWalkAnimation.png").toAnimatedTexture(10, Duration.seconds(1));
+
+        int spawnX;
+        int spawnY = random(-100,300);
+
+        if (spawnY > -50){
+            spawnX = getAppWidth();
+        }
+        else{
+            spawnX = random(getAppWidth()/2,getAppWidth());
+        }
+
         return entityBuilder()
-                .type(EntityType.MOOSE)
-                .at(FXGLMath.random(getAppWidth()/2,getAppWidth()),-100)
+                .type(EntityType.LEFTMOOSE)
+                .at(spawnX,spawnY)
                 .viewWithBBox(view.loop())
+                .with(new MooseComponent())
+                .collidable()
+                .build();
+    }
+    @Spawns("rightMoose")
+    public static Entity newRightMoose(SpawnData data) {
+        AnimatedTexture view = texture("mooseWalkAnimation.png").toAnimatedTexture(10, Duration.seconds(1));
+
+        int spawnX;
+        int spawnY = random(-100,300);
+
+        if (spawnY > -50){
+            spawnX = -100;
+        }
+        else{
+            spawnX = random(-100,(getAppWidth()/2)-45);
+        }
+
+        return entityBuilder()
+                .type(EntityType.RIGHTMOOSE)
+                .at(spawnX,spawnY)
+                .viewWithBBox(view.loop())
+                .scale(-1,1)
                 .with(new MooseComponent())
                 .collidable()
                 .build();

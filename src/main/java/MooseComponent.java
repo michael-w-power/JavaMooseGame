@@ -10,7 +10,7 @@ public class MooseComponent extends Component {
 
     @Override
     public void onUpdate(double tpf) {
-        if ((this.getEntity().getY() >= 900)||(this.getEntity().getX() >= 600)||(this.getEntity().getX() <= -100)){
+        if ((this.getEntity().getY() >= 900)||(this.getEntity().getX() >= 650)||(this.getEntity().getX() <= -101)){
             FXGL.getWorldProperties().increment("score", 1000);
             this.getEntity().removeFromWorld();
         }
