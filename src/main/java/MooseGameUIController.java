@@ -22,9 +22,15 @@ public class MooseGameUIController implements UIController {
     @FXML
     private Text scoreText;
 
+    @FXML
+    private Text remainingLabel;
+
+    @FXML
+    private Text remainingTime;
+
     @Override
     public void init() {
-
         scoreText.textProperty().bind(getip("score").asString());
+        remainingTime.textProperty().bind(getip("time").asString());
     }
 }

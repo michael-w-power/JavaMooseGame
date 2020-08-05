@@ -34,6 +34,7 @@ public class MooseGameApp extends GameApplication {
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("score", 0);
+        vars.put("time",60);
         vars.put("speed",150);
     }
 
@@ -69,7 +70,7 @@ public class MooseGameApp extends GameApplication {
         run(()->spawn("potHole"),Duration.seconds(5));
         run(()->spawn("leftMoose"),Duration.seconds(10));
         run(()->spawn("rightMoose"),Duration.seconds(10));
-
+        run(()->FXGL.getWorldProperties().setValue("time",FXGL.getWorldProperties().getInt("time")-1),Duration.seconds(2));
     }
 
     @Override
@@ -91,7 +92,7 @@ public class MooseGameApp extends GameApplication {
             moose.removeFromWorld();
 
             FXGL.getWorldProperties().increment("score", -1000);
-            getDialogService().showMessageBox("Game Over. Press OK to exit", getGameController()::exit);
+            getDialogService().showMessageBox("Game Over. Press OK to retry", getGameController()::gotoMainMenu);
 
         });
     }
@@ -121,6 +122,9 @@ public class MooseGameApp extends GameApplication {
             background2.setY(background2.getY()-2700);
         }
 
+        if (FXGL.getWorldProperties().getInt("time")<=0){
+            getDialogService().showMessageBox("You win!! Press OK to return to menu", getGameController()::gotoMainMenu);
+        }
     }
 
     public static void main(String[] args) {
