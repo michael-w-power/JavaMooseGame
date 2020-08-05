@@ -1,6 +1,8 @@
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.component.Component;
 
+import static com.almasb.fxgl.dsl.FXGL.play;
+
 /**
  * Player class
  */
@@ -8,7 +10,6 @@ public class PlayerComponent extends Component {
 
     @Override
     public void onAdded(){
-        ;
     }
 
     @Override

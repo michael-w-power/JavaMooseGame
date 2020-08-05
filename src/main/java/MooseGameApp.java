@@ -20,6 +20,7 @@ public class MooseGameApp extends GameApplication {
     private Entity player;
     private Entity background1;
     private Entity background2;
+    private Entity signpost;
 
 
     @Override
@@ -62,22 +63,23 @@ public class MooseGameApp extends GameApplication {
 
     @Override
     protected void initGame(){
+        play("Poisoncut_GameLoop.mp3");
         getGameWorld().addEntityFactory(new GameEntityFactory());
         background1 = spawn("background");
         background2 = spawn("background2");
         player = spawn("player",350,700);
-        run(()->spawn("potHole"),Duration.seconds(5));
-        run(()->spawn("leftMoose"),Duration.seconds(10));
-        run(()->spawn("rightMoose"),Duration.seconds(10));
-        //////
-        run(()->spawn("gasTank"),Duration.seconds(15));
+        signpost = spawn("signPost");
+        run(()->spawn("potHole"),Duration.seconds(random(5,10)));
+        run(()->spawn("leftMoose"),Duration.seconds(random(3,10)));
+        run(()->spawn("rightMoose"),Duration.seconds(random(3,10)));
+        run(()->spawn("gasTank"),Duration.seconds(random(10,15)));
 
         run(()->FXGL.getWorldProperties().setValue("time",FXGL.getWorldProperties().getInt("time")-1),Duration.seconds(2));
     }
 
     @Override
     protected void initPhysics(){
-        ////
+
         onCollisionBegin(EntityType.PLAYER,EntityType.GASTANK, (player, gastank) -> {
             gastank.removeFromWorld();
             FXGL.getWorldProperties().increment("score", 250);
@@ -93,14 +95,18 @@ public class MooseGameApp extends GameApplication {
 
             FXGL.getWorldProperties().increment("score", -1000);
             getDialogService().showMessageBox("Game Over. Press OK to exit", getGameController()::exit);
-
         });
 
         onCollisionBegin(EntityType.PLAYER,EntityType.RIGHTMOOSE, (player, moose) -> {
             moose.removeFromWorld();
-
             FXGL.getWorldProperties().increment("score", -1000);
             getDialogService().showMessageBox("Game Over. Press OK to retry", getGameController()::gotoMainMenu);
+
+        });
+
+        onCollisionBegin(EntityType.PLAYER,EntityType.SIGNPOST, (player, signpost) -> {
+            FXGL.getWorldProperties().increment("score", -1000);
+            getDialogService().showMessageBox("Game Over. Did you really just hit the sign? Rough. Press OK to retry", getGameController()::gotoMainMenu);
 
         });
     }
@@ -110,6 +116,8 @@ public class MooseGameApp extends GameApplication {
         getGameWorld().getEntitiesByType(EntityType.GASTANK).forEach(gastank -> gastank.translateY(FXGL.getWorldProperties().getInt("speed")*tpf));
 
         getGameWorld().getEntitiesByType(EntityType.POTHOLE).forEach(pothole -> pothole.translateY(FXGL.getWorldProperties().getInt("speed")*tpf));
+
+        getGameWorld().getEntitiesByType(EntityType.SIGNPOST).forEach(pothole -> pothole.translateY(FXGL.getWorldProperties().getInt("speed")*tpf));
 
         getGameWorld().getEntitiesByType(EntityType.LEFTMOOSE).forEach(moose -> moose.translateY(FXGL.getWorldProperties().getInt("speed")*tpf));
         getGameWorld().getEntitiesByType(EntityType.LEFTMOOSE).forEach(moose -> moose.translateX(-2));

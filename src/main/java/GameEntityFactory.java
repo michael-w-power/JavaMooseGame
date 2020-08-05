@@ -39,13 +39,22 @@ public class GameEntityFactory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("signPost")
+    public static Entity newSignPost(SpawnData data){
+        return entityBuilder()
+                .type(EntityType.SIGNPOST)
+                .at(getAppWidth()-125,100)
+                .viewWithBBox("signpost.png")
+                .collidable()
+                .build();
+    }
+
     @Spawns("potHole")
     public static Entity newPotHole(SpawnData data) {
         return entityBuilder()
                 .type(EntityType.POTHOLE)
                 .at(FXGLMath.random(75,getAppWidth()-150),-100)
                 .viewWithBBox("potHole.png")
-                .scale(.8,.8)
                 .with(new PotHoleComponent())
                 .collidable()
                 .build();
