@@ -51,6 +51,18 @@ public class GameEntityFactory implements EntityFactory {
                 .build();
     }
 
+    @Spawns("gasTank")
+    public static Entity newGasTank(SpawnData data){
+        return entityBuilder()
+                .type(EntityType.GASTANK)
+                .at(FXGLMath.random(75,getAppWidth()-300),-150)
+                .viewWithBBox("gasTank.PNG")
+                .scale(.8,.8)
+                .with(new GasTankComponent())
+                .collidable()
+                .build();
+    }
+
     @Spawns("leftMoose")
     public static Entity newMoose(SpawnData data) {
         AnimatedTexture view = texture("mooseWalkAnimation.png").toAnimatedTexture(10, Duration.seconds(1));

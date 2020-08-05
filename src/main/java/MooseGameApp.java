@@ -40,7 +40,6 @@ public class MooseGameApp extends GameApplication {
     @Override
     protected void initUI(){
         UI ui = getAssetLoader().loadUI("moosegame_ui.fxml", new MooseGameUIController());
-
         getGameScene().addUI(ui);
     }
 
@@ -69,11 +68,19 @@ public class MooseGameApp extends GameApplication {
         run(()->spawn("potHole"),Duration.seconds(5));
         run(()->spawn("leftMoose"),Duration.seconds(10));
         run(()->spawn("rightMoose"),Duration.seconds(10));
+        //////
+        run(()->spawn("gasTank"),Duration.seconds(15));
 
     }
 
     @Override
     protected void initPhysics(){
+        ////
+        onCollisionBegin(EntityType.PLAYER,EntityType.GASTANK, (player, gastank) -> {
+            gastank.removeFromWorld();
+            FXGL.getWorldProperties().increment("score", 250);
+        });
+
         onCollisionBegin(EntityType.PLAYER,EntityType.POTHOLE, (player, pothole) -> {
             pothole.removeFromWorld();
             FXGL.getWorldProperties().increment("score", -100);
@@ -94,11 +101,13 @@ public class MooseGameApp extends GameApplication {
             getDialogService().showMessageBox("Game Over. Press OK to exit", getGameController()::exit);
 
         });
+
+
     }
 
     @Override
     protected void onUpdate(double tpf){
-
+        getGameWorld().getEntitiesByType(EntityType.GASTANK).forEach(gastank -> gastank.translateY(FXGL.getWorldProperties().getInt("speed")*tpf));
 
         getGameWorld().getEntitiesByType(EntityType.POTHOLE).forEach(pothole -> pothole.translateY(FXGL.getWorldProperties().getInt("speed")*tpf));
 
@@ -110,7 +119,6 @@ public class MooseGameApp extends GameApplication {
 
         background1.translateY(FXGL.getWorldProperties().getInt("speed") * tpf);
         background2.translateY(FXGL.getWorldProperties().getInt("speed") * tpf);
-
 
 
         if (background1.getY() >= 1350){
