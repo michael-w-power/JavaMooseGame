@@ -1,6 +1,8 @@
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.scene.FXGLMenu;
+import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.ui.UI;
@@ -30,6 +32,12 @@ public class MooseGameApp extends GameApplication {
         settings.setTitle("MooseGame");
         settings.setVersion("0.3");
         settings.setMenuEnabled(true);
+        settings.setSceneFactory(new SceneFactory(){
+            @Override
+            public FXGLMenu newMainMenu() {
+                return new MooseGameMenu();
+            }
+        });
     }
 
     @Override
