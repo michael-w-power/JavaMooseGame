@@ -33,7 +33,7 @@ public class GameEntityFactory implements EntityFactory {
         return entityBuilder()
                 .type(EntityType.PLAYER)
                 .from(data)
-                .viewWithBBox("Car_Audi_Sport_Quattro_86x145.png")
+                .viewWithBBox("car1.png")
                 .with(new PlayerComponent())
                 .collidable()
                 .build();
