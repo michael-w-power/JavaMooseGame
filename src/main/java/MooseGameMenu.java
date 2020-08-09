@@ -12,7 +12,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import org.jetbrains.annotations.NotNull;
+
 
 import java.util.ArrayList;
 
@@ -25,7 +27,7 @@ public class MooseGameMenu extends FXGLMenu {
     private Node leaderboardScreen;
     private StackPane carSelectionScreen;
     private Music bgm;
-    private String car = "assets/textures/car0.png";
+    private static String car = "assets/textures/car0.png";
     private SaveData savedData = null;
 
     public MooseGameMenu() {
