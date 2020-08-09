@@ -9,6 +9,9 @@ import javafx.scene.text.Text;
 import static com.almasb.fxgl.dsl.FXGL.getUIFactoryService;
 import static com.almasb.fxgl.dsl.FXGL.getip;
 
+/**
+ * UI Controller for the main game. Handles putting the score and time remaining into moosegame_ui.fxgml
+ */
 public class MooseGameUIController implements UIController {
     @FXML
     private Pane root;
@@ -28,6 +31,9 @@ public class MooseGameUIController implements UIController {
     @FXML
     private Text remainingTime;
 
+    /**
+     * Puts the score and time in the correct place in moosegame_ui.fxml
+     */
     @Override
     public void init() {
         scoreText.textProperty().bind(getip("score").asString());
