@@ -3,9 +3,12 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
+import com.almasb.fxgl.audio.Music;
+import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.ui.UI;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Rectangle;
@@ -23,7 +26,10 @@ public class MooseGameApp extends GameApplication {
     private Entity background1;
     private Entity background2;
     private Entity signpost;
-
+    private Music bgm;
+    private SaveData savedData = null;
+    private int highScore;
+    private String highScoreName;
 
     @Override
     protected void initSettings(GameSettings settings){
@@ -71,12 +77,32 @@ public class MooseGameApp extends GameApplication {
 
     @Override
     protected void initGame(){
-        play("Poisoncut_GameLoop.mp3");
+
         getGameWorld().addEntityFactory(new GameEntityFactory());
+
+
+        getFileSystemService().<SaveData>readDataTask("./highscores.dat")
+                .onSuccess(data -> savedData = data)
+                .onFailure(ignore -> {})
+                .run();
+        if (savedData == null){
+            savedData = new SaveData("Eric",0);
+        }
+        initGame(savedData);
+    }
+
+
+    protected void initGame(SaveData saveData){
+        bgm = getAssetLoader().loadMusic("Poisoncut_GameLoop.mp3");
+        getAudioPlayer().loopMusic(bgm);
+
+        highScore = savedData.getHighScore();
+        highScoreName = savedData.getName();
         background1 = spawn("background");
         background2 = spawn("background2");
         player = spawn("player",350,700);
         signpost = spawn("signPost");
+
         run(()->spawn("potHole"),Duration.seconds(random(5,10)));
         run(()->spawn("leftMoose"),Duration.seconds(random(3,10)));
         run(()->spawn("rightMoose"),Duration.seconds(random(3,10)));
@@ -85,7 +111,6 @@ public class MooseGameApp extends GameApplication {
         run(()->FXGL.getWorldProperties().setValue("time",FXGL.getWorldProperties().getInt("time")-1),Duration.seconds(2));
     }
 
-    @Override
     protected void initPhysics(){
 
         onCollisionBegin(EntityType.PLAYER,EntityType.GASTANK, (player, gastank) -> {
@@ -100,21 +125,20 @@ public class MooseGameApp extends GameApplication {
 
         onCollisionBegin(EntityType.PLAYER,EntityType.LEFTMOOSE, (player, moose) -> {
             moose.removeFromWorld();
-
             FXGL.getWorldProperties().increment("score", -1000);
-            getDialogService().showMessageBox("Game Over. Press OK to exit", getGameController()::exit);
+            gameOver();
         });
 
         onCollisionBegin(EntityType.PLAYER,EntityType.RIGHTMOOSE, (player, moose) -> {
             moose.removeFromWorld();
             FXGL.getWorldProperties().increment("score", -1000);
-            getDialogService().showMessageBox("Game Over. Press OK to retry", getGameController()::gotoMainMenu);
+            gameOver();
 
         });
 
         onCollisionBegin(EntityType.PLAYER,EntityType.SIGNPOST, (player, signpost) -> {
             FXGL.getWorldProperties().increment("score", -1000);
-            getDialogService().showMessageBox("Game Over. Did you really just hit the sign? Rough. Press OK to retry", getGameController()::gotoMainMenu);
+            gameOver();
 
         });
     }
@@ -148,6 +172,45 @@ public class MooseGameApp extends GameApplication {
         if (FXGL.getWorldProperties().getInt("time")<=0){
             getDialogService().showMessageBox("You win!! Press OK to return to menu", getGameController()::gotoMainMenu);
         }
+    }
+
+    private void gameOver() {
+
+
+        Point2D explosionSpawnPoint = player.getPosition().subtract(30, 0);
+        spawn("explosion", explosionSpawnPoint);
+
+
+        getAudioPlayer().stopMusic(bgm);
+        String[] mooseFacts = {"The province of NL experiences over 700 \nmoose vehicle accidents per year on average.",
+                "On average there is approximately 40000 \nmoose calves born in the province of NL each year.",
+                "Motor-vehicle accidents involving moose are \n13 times more likely to result in death than crashes with deer.",
+                "The majority of moose vehicle accidents \noccur between dusk and dawn, \nwhen moose are most active and visibility is low",
+                "This is the time when driver visibility \nis severely limited by darkness, and when moose are most active.",
+                "Moose crossing signs mark High-Risk areas. \nSlow down and watch for moose."};
+
+        String randomMessage = mooseFacts[FXGLMath.random(0,3)];
+        getDialogService().showConfirmationBox("Did you know?\n"+randomMessage+"\nPlay Again?", yes -> {
+            if (yes) {
+                getGameWorld().getEntitiesCopy().forEach(Entity::removeFromWorld);
+                getGameController().startNewGame();
+            } else {
+
+                int score = FXGL.getWorldProperties().getInt("score");
+
+                if (score > highScore) {
+                    getDialogService().showInputBox("High Score! Enter your name", playerName -> {
+
+                        // we have to use file system directly, since we are running without menus
+                        getFileSystemService().writeDataTask(new SaveData(playerName, score), "./highscores.dat").run();
+
+                        getGameController().exit();
+                    });
+                } else {
+                    getGameController().exit();
+                }
+            }
+        });
     }
 
     public static void main(String[] args) {

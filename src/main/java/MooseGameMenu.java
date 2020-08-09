@@ -1,5 +1,8 @@
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.MenuType;
+import com.almasb.fxgl.audio.Music;
+import com.almasb.fxgl.audio.Sound;
+import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
@@ -7,6 +10,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -16,20 +20,24 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-import static com.almasb.fxgl.dsl.FXGL.getUIFactoryService;
+import static com.almasb.fxgl.dsl.FXGL.*;
 import static javafx.scene.paint.Color.*;
 
 public class MooseGameMenu extends FXGLMenu {
 
     private Node mainMenuScreen;
     private Node leaderboardScreen;
-    private Node carSelectionScreen;
+    private StackPane carSelectionScreen;
+    private Music bgm;
+    private String car = "assets/textures/car0.png";
 
     public MooseGameMenu() {
         super(MenuType.MAIN_MENU);
         mainMenuScreen = createMainMenu();
         showMainMenu();
         carSelectionScreen = carSelectionMenu();
+        bgm = getAssetLoader().loadMusic("Poisoncut_-_MenuMusic.mp3");
+        getAudioPlayer().loopMusic(bgm);
     }
 
 //    private Node leaderboardMenu(){
@@ -37,17 +45,17 @@ public class MooseGameMenu extends FXGLMenu {
 //    }
 
     private Node createMainMenu(){
-        MooseButton playButton = new MooseButton("Play Game", () -> fireNewGame());
-        MooseButton leaderboardButton = new MooseButton("Leaderboard", () -> fireNewGame());
+        MooseButton playButton = new MooseButton("Play Game", () -> {fireNewGame();getAudioPlayer().stopMusic(bgm);});
+        MooseButton leaderboardButton = new MooseButton("Leaderboard", () -> {fireNewGame();getAudioPlayer().stopMusic(bgm);});
         MooseButton carSelectionButton = new MooseButton("Car Selection", () -> showSelectionMenu());
-        MooseButton creditButton = new MooseButton("Credits", () -> fireNewGame());
+        MooseButton creditButton = new MooseButton("Credits", () -> {fireNewGame();getAudioPlayer().stopMusic(bgm);});
         MooseButton quitButton = new MooseButton("Exit Game", () -> fireExit());
 
         MooseGameMenuTitle title = new MooseGameMenuTitle("Moose On The Loose");
 
         var box = new VBox(15, playButton, leaderboardButton, carSelectionButton, creditButton, quitButton);
         var titleBox = new VBox (title);
-        var menuBox = new VBox(titleBox, box);
+
 
         titleBox.setTranslateX(30);
         titleBox.setTranslateY(200);
@@ -60,6 +68,8 @@ public class MooseGameMenu extends FXGLMenu {
         box.setPadding(new Insets(50));
         box.setMaxWidth(0);
 
+
+        var menuBox = new VBox(titleBox, box);
         return menuBox;
     }
 
@@ -79,39 +89,60 @@ public class MooseGameMenu extends FXGLMenu {
         getMenuContentRoot().getChildren().addAll(carSelectionScreen);
     }
 
-    private Node carSelectionMenu(){
+    private StackPane carSelectionMenu(){
         StackPane pane = new StackPane();
         pane.setPrefSize(600,900);
         pane.setAlignment(Pos.CENTER);
 
         VBox box = new VBox();
-        box.setPrefSize(300, 450);
-        Button car1Button = new Button("Car 1");
-        car1Button.setOnAction(((event) -> {SelectCar1();}));
+        box.setPrefSize(600, 900);
+        Button car1Button = new Button("Prev Car");
+        car1Button.setOnAction((event) -> {
+            prevCar();});
         box.getChildren().add(car1Button);
 
-        Button car2Button = new Button("Car 2");
-        car2Button.setOnAction(((event) -> {SelectCar2();}));
+        Button car2Button = new Button("Next Car");
+        car2Button.setOnAction((event) -> {
+            nextCar();});
         box.getChildren().add(car2Button);
 
         pane.getChildren().add(box);
 
-        //Image img = new Image("Car_AM_General_Hummer_98x164.png");
-        ImageView carView = new ImageView("file:Roadway.png");
-        Rectangle rect = new Rectangle();
-        rect.setStyle("-fx-background-color: black");
-        rect.setX(300);
-        pane.getChildren().add(rect);
+        Image img = new Image(car);
+        ImageView carView = new ImageView(img);
+        pane.getChildren().add(carView);
 
         return pane;
     }
 
-    private void SelectCar1(){
+    private void nextCar(){
+        int carNum = Character.getNumericValue(car.charAt(19));
+        int nextCarNum = (carNum + 1)%10;
 
+        System.out.println("car.charat:"+car.charAt(19));
+        System.out.println("carnum:"+carNum);
+        System.out.println("nextcarnum:"+nextCarNum);
+        car = "assets/textures/car".concat(Integer.toString(nextCarNum)).concat(".png");
+        carSelectionScreen.getChildren().remove(1);
+        Image img = new Image(car);
+        ImageView carView = new ImageView(img);
+        carSelectionScreen.getChildren().add(carView);
     }
 
-    private void SelectCar2(){
-
+    private void prevCar(){
+        int carNum = Character.getNumericValue(car.charAt(19));
+        if (carNum == 0){
+            carNum = 10;
+        }
+        int nextCarNum = (carNum - 1)%10;
+        System.out.println("car.charat:"+car.charAt(19));
+        System.out.println("carnum:"+carNum);
+        System.out.println("nextcarnum:"+nextCarNum);
+        car = "assets/textures/car".concat(Integer.toString(nextCarNum)).concat(".png");
+        carSelectionScreen.getChildren().remove(1);
+        Image img = new Image(car);
+        ImageView carView = new ImageView(img);
+        carSelectionScreen.getChildren().add(carView);
     }
 
 
@@ -164,7 +195,7 @@ public class MooseGameMenu extends FXGLMenu {
     private static class MooseButton extends StackPane {
         private static final Color SELECTED_COLOR = WHITE;
         private static final Color NOT_SELECTED = GRAY;
-
+        private Sound selectSound = getAssetLoader().loadSound("selection.mp3");
         private String name;
         private Runnable action;
 
@@ -174,25 +205,23 @@ public class MooseGameMenu extends FXGLMenu {
         public MooseButton(String name, Runnable action) {
             this.name = name;
             this.action = action;
-
             text = getUIFactoryService().newText(name, WHITE, 25.0);
             text.fillProperty().bind(Bindings.when(hoverProperty()).then(SELECTED_COLOR).otherwise(NOT_SELECTED));
             text.strokeProperty().bind(Bindings.when(hoverProperty()).then(SELECTED_COLOR).otherwise(NOT_SELECTED));
             text.setStrokeWidth(0.50);
-
             selector = new Rectangle(6,17, WHITE);
             selector.setTranslateX(-25);
             selector.setTranslateY(-2);
             selector.visibleProperty().bind(hoverProperty());
-
             setAlignment(Pos.CENTER_LEFT);
             setFocusTraversable(true);
-
+            setOnMouseEntered(e-> {getAudioPlayer().playSound(selectSound);});
             setOnMouseClicked(e -> {
                 action.run();
             });
-
+            setMaxWidth(0);
             getChildren().addAll(selector, text);
+
         }
     }
 }
