@@ -1,21 +1,24 @@
+import com.almasb.fxgl.core.collection.Array;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class SaveData implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final String name;
-    private final int highScore;
+    private ArrayList highScoreList = new ArrayList();
 
-    public SaveData(String name, int highScore) {
-        this.name = name;
-        this.highScore = highScore;
+    public SaveData(ArrayList<HighScore> highScoreList) {
+        this.highScoreList = highScoreList;
     }
 
-    public String getName() {
-        return name;
+    public ArrayList<HighScore> getHighScoreList() {
+        return highScoreList;
     }
 
-    public int getHighScore() {
-        return highScore;
+    public void sortHighScores(){
+        Collections.sort(highScoreList,new sortHighScores());
     }
+
 }

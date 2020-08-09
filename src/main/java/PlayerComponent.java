@@ -33,11 +33,15 @@ public class PlayerComponent extends Component {
         entity.translate(0,2);
     }
 
-    public void slowDown(){
+    public void gearOne(){
         FXGL.getWorldProperties().setValue("speed",75);
     }
 
-    public void regularSpeed(){
+    public void gearTwo(){
         FXGL.getWorldProperties().setValue("speed",150);
+    }
+
+    public void gearThree(){
+        FXGL.getWorldProperties().setValue("speed",225);
     }
 }

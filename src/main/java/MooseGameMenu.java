@@ -20,6 +20,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static javafx.scene.paint.Color.*;
 
@@ -30,23 +32,49 @@ public class MooseGameMenu extends FXGLMenu {
     private StackPane carSelectionScreen;
     private Music bgm;
     private String car = "assets/textures/car0.png";
+    private SaveData savedData = null;
 
     public MooseGameMenu() {
         super(MenuType.MAIN_MENU);
         mainMenuScreen = createMainMenu();
         showMainMenu();
         carSelectionScreen = carSelectionMenu();
+        leaderboardScreen = leaderboardMenu();
         bgm = getAssetLoader().loadMusic("Poisoncut_-_MenuMusic.mp3");
         getAudioPlayer().loopMusic(bgm);
     }
 
-//    private Node leaderboardMenu(){
-//
-//    }
+    private StackPane leaderboardMenu(){
+
+        getFileSystemService().<SaveData>readDataTask("./highscores.dat")
+                .onSuccess(data -> savedData = data)
+                .onFailure(error->{error.printStackTrace();})
+                .run();
+        if (savedData == null){
+            savedData = new SaveData(new ArrayList<HighScore>());
+            savedData.getHighScoreList().add(new HighScore("CPU",0));
+            savedData.getHighScoreList().add(new HighScore("CPU",0));
+            savedData.getHighScoreList().add(new HighScore("CPU",0));
+            System.out.println("new save data");
+        }
+
+        StackPane pane = new StackPane();
+        pane.setPrefSize(600,900);
+        pane.setAlignment(Pos.CENTER);
+        ArrayList<HighScore> highScores = savedData.getHighScoreList();
+        int y = 0;
+        for (int i = 0; i < highScores.size(); i++) { ;
+            Text text = new Text(i+".\t" + highScores.get(i).getName() +"\t\t\t" + Integer.toString(highScores.get(i).getScore()));
+            text.setTranslateY(y);
+            y+=10;
+            pane.getChildren().add(text);
+        }
+        return pane;
+    }
 
     private Node createMainMenu(){
         MooseButton playButton = new MooseButton("Play Game", () -> {fireNewGame();getAudioPlayer().stopMusic(bgm);});
-        MooseButton leaderboardButton = new MooseButton("Leaderboard", () -> {fireNewGame();getAudioPlayer().stopMusic(bgm);});
+        MooseButton leaderboardButton = new MooseButton("Leaderboard", () -> showLeaderBoardMenu());
         MooseButton carSelectionButton = new MooseButton("Car Selection", () -> showSelectionMenu());
         MooseButton creditButton = new MooseButton("Credits", () -> {fireNewGame();getAudioPlayer().stopMusic(bgm);});
         MooseButton quitButton = new MooseButton("Exit Game", () -> fireExit());
@@ -87,6 +115,11 @@ public class MooseGameMenu extends FXGLMenu {
 //        getContentRoot().getChildren().add(0, bg);
         getMenuContentRoot().getChildren().clear();
         getMenuContentRoot().getChildren().addAll(carSelectionScreen);
+    }
+
+    private void showLeaderBoardMenu(){
+        getMenuContentRoot().getChildren().clear();
+        getMenuContentRoot().getChildren().addAll(leaderboardScreen);
     }
 
     private StackPane carSelectionMenu(){

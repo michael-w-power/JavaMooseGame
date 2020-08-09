@@ -4,22 +4,22 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.app.scene.FXGLMenu;
 import com.almasb.fxgl.app.scene.SceneFactory;
 import com.almasb.fxgl.audio.Music;
+import com.almasb.fxgl.core.collection.Array;
 import com.almasb.fxgl.core.math.FXGLMath;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.ui.UI;
 import javafx.geometry.Point2D;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import javafx.scene.text.Text;
+
+import java.util.ArrayList;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGL.*;
 
 /**
- * Main app for the Moose game.
+ * Main game loop app for Moose on the Loose.
  */
 public class MooseGameApp extends GameApplication {
     private Entity player;
@@ -30,7 +30,13 @@ public class MooseGameApp extends GameApplication {
     private SaveData savedData = null;
     private int highScore;
     private String highScoreName;
+    private ArrayList<HighScore> highScoreList;
 
+
+    /**
+     * Initializes the game settings
+     * @param settings
+     */
     @Override
     protected void initSettings(GameSettings settings){
         settings.setWidth(600);
@@ -66,8 +72,9 @@ public class MooseGameApp extends GameApplication {
         onKey(KeyCode.D, () -> player.getComponent(PlayerComponent.class).moveRight());
         onKey(KeyCode.W, () -> player.getComponent(PlayerComponent.class).moveUp());
 
-        onKey(KeyCode.SPACE, () -> player.getComponent(PlayerComponent.class).slowDown());
-        //onKey(KeyCode.C, () -> player.getComponent(PlayerComponent.class).regularSpeed());
+        onKey(KeyCode.DIGIT1, () -> player.getComponent(PlayerComponent.class).gearOne());
+        onKey(KeyCode.DIGIT2, () -> player.getComponent(PlayerComponent.class).gearTwo());
+        onKey(KeyCode.DIGIT3, () -> player.getComponent(PlayerComponent.class).gearThree());
 
         onKey(KeyCode.LEFT, () -> player.getComponent(PlayerComponent.class).moveLeft());
         onKey(KeyCode.DOWN, () -> player.getComponent(PlayerComponent.class).moveDown());
@@ -83,10 +90,14 @@ public class MooseGameApp extends GameApplication {
 
         getFileSystemService().<SaveData>readDataTask("./highscores.dat")
                 .onSuccess(data -> savedData = data)
-                .onFailure(ignore -> {})
+                .onFailure(error->{error.printStackTrace();})
                 .run();
         if (savedData == null){
-            savedData = new SaveData("Eric",0);
+            savedData = new SaveData(new ArrayList<HighScore>());
+            savedData.getHighScoreList().add(new HighScore("CPU",0));
+            savedData.getHighScoreList().add(new HighScore("CPU",0));
+            savedData.getHighScoreList().add(new HighScore("CPU",0));
+            System.out.println("new scorelist created.");
         }
         initGame(savedData);
     }
@@ -96,8 +107,8 @@ public class MooseGameApp extends GameApplication {
         bgm = getAssetLoader().loadMusic("Poisoncut_GameLoop.mp3");
         getAudioPlayer().loopMusic(bgm);
 
-        highScore = savedData.getHighScore();
-        highScoreName = savedData.getName();
+        highScoreList = saveData.getHighScoreList();
+
         background1 = spawn("background");
         background2 = spawn("background2");
         player = spawn("player",350,700);
@@ -115,29 +126,45 @@ public class MooseGameApp extends GameApplication {
 
         onCollisionBegin(EntityType.PLAYER,EntityType.GASTANK, (player, gastank) -> {
             gastank.removeFromWorld();
-            FXGL.getWorldProperties().increment("score", 250);
+            if (getWorldProperties().getInt("speed")==75){
+                FXGL.getWorldProperties().increment("score", 125);
+            }
+            else if (getWorldProperties().getInt("speed")==150){
+                FXGL.getWorldProperties().increment("score", 250);
+            }
+            else if (getWorldProperties().getInt("speed")==225){
+                FXGL.getWorldProperties().increment("score", 375);
+            }
         });
 
         onCollisionBegin(EntityType.PLAYER,EntityType.POTHOLE, (player, pothole) -> {
             pothole.removeFromWorld();
-            FXGL.getWorldProperties().increment("score", -100);
+            if (getWorldProperties().getInt("speed")==75){
+                FXGL.getWorldProperties().increment("score", -50);
+            }
+            else if (getWorldProperties().getInt("speed")==150){
+                FXGL.getWorldProperties().increment("score", -100);
+            }
+            else if (getWorldProperties().getInt("speed")==225){
+                FXGL.getWorldProperties().increment("score", -150);
+            }
         });
 
         onCollisionBegin(EntityType.PLAYER,EntityType.LEFTMOOSE, (player, moose) -> {
             moose.removeFromWorld();
-            FXGL.getWorldProperties().increment("score", -1000);
+            //FXGL.getWorldProperties().increment("score", -1000);
             gameOver();
         });
 
         onCollisionBegin(EntityType.PLAYER,EntityType.RIGHTMOOSE, (player, moose) -> {
             moose.removeFromWorld();
-            FXGL.getWorldProperties().increment("score", -1000);
+            //FXGL.getWorldProperties().increment("score", -1000);
             gameOver();
 
         });
 
         onCollisionBegin(EntityType.PLAYER,EntityType.SIGNPOST, (player, signpost) -> {
-            FXGL.getWorldProperties().increment("score", -1000);
+            //FXGL.getWorldProperties().increment("score", -1000);
             gameOver();
 
         });
@@ -197,17 +224,22 @@ public class MooseGameApp extends GameApplication {
             } else {
 
                 int score = FXGL.getWorldProperties().getInt("score");
-
-                if (score > highScore) {
+                if (score > highScoreList.get(highScoreList.size()-1).getScore()) {
                     getDialogService().showInputBox("High Score! Enter your name", playerName -> {
-
-                        // we have to use file system directly, since we are running without menus
-                        getFileSystemService().writeDataTask(new SaveData(playerName, score), "./highscores.dat").run();
-
-                        getGameController().exit();
+                        for (int i = 0; i < highScoreList.size(); i++) {
+                            if (score > highScoreList.get(i).getScore()){
+                                highScoreList.add(i,new HighScore(playerName,score));
+                                highScoreList.sort(new sortHighScores());
+                                highScoreList.remove(highScoreList.size()-1);
+                                break;
+                            }
+                            System.out.println(highScoreList.get(i).getName());
+                        }
+                        getFileSystemService().writeDataTask(new SaveData(highScoreList), "./highscores.dat").run();
+                        getGameController().gotoMainMenu();
                     });
                 } else {
-                    getGameController().exit();
+                    getGameController().gotoMainMenu();
                 }
             }
         });
