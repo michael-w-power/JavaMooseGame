@@ -58,6 +58,7 @@ public class MooseGameMenu extends FXGLMenu {
         box.setTranslateY(400);
         box.setBackground(new Background(new BackgroundFill(BLACK, null, null)));
         box.setPadding(new Insets(50));
+        box.setMaxWidth(0);
 
         return menuBox;
     }
