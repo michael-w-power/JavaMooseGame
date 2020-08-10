@@ -30,12 +30,14 @@ public class MooseGameMenu extends FXGLMenu {
     private static String car = "assets/textures/car0.png";
     private SaveData savedData = null;
 
+
+
+
     public MooseGameMenu() {
         super(MenuType.MAIN_MENU);
         mainMenuScreen = createMainMenu();
         showMainMenu();
         carSelectionScreen = carSelectionMenu();
-        leaderboardScreen = leaderboardMenu();
         bgm = getAssetLoader().loadMusic("Poisoncut_-_MenuMusic.mp3");
         getAudioPlayer().loopMusic(bgm);
     }
@@ -48,23 +50,31 @@ public class MooseGameMenu extends FXGLMenu {
                 .run();
         if (savedData == null){
             savedData = new SaveData(new ArrayList<HighScore>());
-            savedData.getHighScoreList().add(new HighScore("CPU",0));
-            savedData.getHighScoreList().add(new HighScore("CPU",0));
-            savedData.getHighScoreList().add(new HighScore("CPU",0));
+            savedData.getHighScoreList().add(new HighScore("Eric",100));
+            savedData.getHighScoreList().add(new HighScore("Josh",50));
+            savedData.getHighScoreList().add(new HighScore("Pranjal",0));
             System.out.println("new save data");
         }
 
         StackPane pane = new StackPane();
         pane.setPrefSize(600,900);
         pane.setAlignment(Pos.CENTER);
+        VBox box = new VBox();
+        box.setPrefSize(600, 900);
+        MooseButton backButton = new MooseButton("Back", this::showMainMenu);
+        backButton.setBackground(new Background(new BackgroundFill(BLACK, null, null)));
+        backButton.setPadding(new Insets(25));
+        backButton.setMaxWidth(0);
+        box.getChildren().add(backButton);
         ArrayList<HighScore> highScores = savedData.getHighScoreList();
         int y = 0;
         for (int i = 0; i < highScores.size(); i++) { ;
-            Text text = new Text(i+".\t" + highScores.get(i).getName() +"\t\t\t" + Integer.toString(highScores.get(i).getScore()));
+            Text text = new Text((i+1)+".\t" + highScores.get(i).getName() +"\t\t\t" + Integer.toString(highScores.get(i).getScore()));
             text.setTranslateY(y);
             y+=10;
             pane.getChildren().add(text);
         }
+        pane.getChildren().add(box);
         return pane;
     }
 
@@ -113,6 +123,7 @@ public class MooseGameMenu extends FXGLMenu {
     }
 
     private void showLeaderBoardMenu(){
+        leaderboardScreen = leaderboardMenu();
         getMenuContentRoot().getChildren().clear();
         getMenuContentRoot().getChildren().addAll(leaderboardScreen);
     }

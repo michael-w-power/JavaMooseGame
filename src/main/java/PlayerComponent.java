@@ -18,19 +18,19 @@ public class PlayerComponent extends Component {
     }
 
     public void moveLeft() {
-        entity.translate(-2,0);
+        entity.translate(-2.5,0);
     }
 
     public void moveRight() {
-        entity.translate(2,0);
+        entity.translate(2.5,0);
     }
 
     public void moveUp(){
-        entity.translate(0,-2);
+        entity.translate(0,-2.5);
     }
 
     public void moveDown(){
-        entity.translate(0,2);
+        entity.translate(0,2.5);
     }
 
     public void gearOne(){
