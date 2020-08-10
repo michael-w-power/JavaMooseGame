@@ -44,7 +44,7 @@ public class MooseGameMenu extends FXGLMenu {
 
         getFileSystemService().<SaveData>readDataTask("./highscores.dat")
                 .onSuccess(data -> savedData = data)
-                .onFailure(error->{error.printStackTrace();})
+                .onFailure(ignore->{})
                 .run();
         if (savedData == null){
             savedData = new SaveData(new ArrayList<HighScore>());
