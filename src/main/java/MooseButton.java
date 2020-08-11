@@ -10,6 +10,10 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 import static javafx.scene.paint.Color.GRAY;
 import static javafx.scene.paint.Color.WHITE;
 
+/**
+ * MooseButton class that creates button to be used on the moose game menu, formats the button to keep them uniform.
+ */
+
 public class MooseButton extends StackPane {
     private static final Color SELECTED_COLOR = WHITE;
     private static final Color NOT_SELECTED = GRAY;

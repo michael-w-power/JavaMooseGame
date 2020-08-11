@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static javafx.scene.paint.Color.*;
 
+/**
+ * Class responsible for switching between all the created game menus.
+ */
 public class MooseGameMenu extends FXGLMenu {
 
     private Node mainMenuScreen;
@@ -33,6 +36,9 @@ public class MooseGameMenu extends FXGLMenu {
     private static String car = "assets/textures/car0.png";
     private SaveData savedData = null;
 
+    /**
+     * Constructor responsible for loading the menu when the game is first loaded.
+     */
     public MooseGameMenu() {
         super(MenuType.MAIN_MENU);
         mainMenuScreen = createMainMenu();
@@ -43,6 +49,10 @@ public class MooseGameMenu extends FXGLMenu {
         getAudioPlayer().loopMusic(bgm);
     }
 
+    /**
+     * This node is created to display credits on the main menu.
+     * @return
+     */
     private Node createCredits(){
         StackPane pane = new StackPane();
         pane.setPrefSize(600,900);
@@ -82,6 +92,10 @@ public class MooseGameMenu extends FXGLMenu {
         return pane;
     }
 
+    /**
+     * responsible for initializing leaderoard from main menu.
+     * @return
+     */
     private StackPane leaderboardMenu(){
 
         getFileSystemService().<SaveData>readDataTask("./highscores.dat")
@@ -116,15 +130,9 @@ public class MooseGameMenu extends FXGLMenu {
             textHighScore.setFill(GRAY);
             textName.setFont(Font.font("deriveFont", FontWeight.EXTRA_BOLD, 35));
             textHighScore.setFont(Font.font("deriveFont", FontWeight.EXTRA_BOLD, 35));
-
             VBox textNameBox = new VBox(textName);
             VBox textHighScoreBox = new VBox(textHighScore);
-
-            //textNameBox.setTranslateY(y);
-            //textHighScoreBox.setTranslateY(y);
             y+=10;
-            //textHighScoreBox.setTranslateX(300);
-            //textNameBox.setTranslateX(0);
             scoreBox.setAlignment(Pos.CENTER_LEFT);
             scoreBox.getChildren().add(textNameBox);
             scoreBox.getChildren().add(textHighScoreBox);
@@ -177,9 +185,6 @@ public class MooseGameMenu extends FXGLMenu {
     }
 
     private void showMainMenu(){
-//        Image img = new Image("file:Roadway.png");
-//        ImageView bg = new ImageView(img);
-//        getContentRoot().getChildren().add(0, bg);
         getMenuContentRoot().getChildren().clear();
         getMenuContentRoot().getChildren().addAll(mainMenuScreen);
     }
@@ -190,19 +195,22 @@ public class MooseGameMenu extends FXGLMenu {
     }
 
     private void showSelectionMenu(){
-//        Image img = new Image("file:Roadway.png");
-//        ImageView bg = new ImageView(img);
-//        getContentRoot().getChildren().add(0, bg);
         getMenuContentRoot().getChildren().clear();
         getMenuContentRoot().getChildren().addAll(carSelectionScreen);
     }
 
+    /***
+     * Class that shows leaderboard menu.
+     */
     private void showLeaderBoardMenu(){
         leaderboardScreen = leaderboardMenu();
         getMenuContentRoot().getChildren().clear();
         getMenuContentRoot().getChildren().addAll(leaderboardScreen);
     }
 
+    /***
+     * Class that shows car selection menu.
+     */
     private StackPane carSelectionMenu(){
         StackPane pane = new StackPane();
         pane.setPrefSize(600,900);
@@ -262,6 +270,9 @@ public class MooseGameMenu extends FXGLMenu {
         return pane;
     }
 
+    /***
+     * Class that gets the car the next car present in the menu.
+     */
     private void nextCar(){
         int carNum = Character.getNumericValue(car.charAt(19));
         int nextCarNum = (carNum + 1)%10;
@@ -272,6 +283,9 @@ public class MooseGameMenu extends FXGLMenu {
         carSelectionScreen.getChildren().add(carView);
     }
 
+    /***
+     * Class that gets the car the previous car present in the menu.
+     */
     private void prevCar(){
         int carNum = Character.getNumericValue(car.charAt(19));
         if (carNum == 0){
@@ -322,6 +336,9 @@ public class MooseGameMenu extends FXGLMenu {
         return new Rectangle();
     }
 
+    /***
+     * Class that returns the car selected by the player.
+     */
     public static String playerCar(){
         return car;
     }

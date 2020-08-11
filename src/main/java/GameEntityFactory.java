@@ -75,6 +75,7 @@ public class GameEntityFactory implements EntityFactory {
                 .collidable()
                 .build();
     }
+
     /**
      * Spawns a pothole
      * @param data used to set spawn location
@@ -91,6 +92,7 @@ public class GameEntityFactory implements EntityFactory {
                 .collidable()
                 .build();
     }
+
     /**
      * Spawns a gas tank
      * @param data used to set spawn location
@@ -107,6 +109,7 @@ public class GameEntityFactory implements EntityFactory {
                 .collidable()
                 .build();
     }
+
     /**
      * Spawns a moose on the Right side of the screen that faces Left
      * @param data unused, could be used to set spawn location
@@ -134,6 +137,7 @@ public class GameEntityFactory implements EntityFactory {
                 .collidable()
                 .build();
     }
+
     /**
      * Spawns a moose on the left side of the screen that faces right
      * @param data unused, could be used to set spawn location
@@ -162,6 +166,7 @@ public class GameEntityFactory implements EntityFactory {
                 .collidable()
                 .build();
     }
+
     /**
      * Spawns an explosion, used when the player crashes.
      * @param data used to set spawn location

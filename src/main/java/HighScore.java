@@ -9,19 +9,31 @@ public class HighScore implements Serializable {
     private final String name;
     private final int score;
 
+    /**
+     * Constructor responsible for creating a HighScore object.
+     * @param name
+     * @param score
+     */
     public HighScore(String name, int score) {
         this.name = name;
         this.score = score;
     }
 
+    /**
+     * getters for name in HighScore object.
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * getters for score in HighScore object.
+     * @return
+     */
     public int getScore() {
         return score;
     }
-
 }
 
 

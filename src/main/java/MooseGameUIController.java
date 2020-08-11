@@ -35,7 +35,7 @@ public class MooseGameUIController implements UIController {
      * Puts the score and time in the correct place in moosegame_ui.fxml
      */
     @Override
-    public void init() {
+    public void init(){
         scoreText.textProperty().bind(getip("score").asString());
         remainingTime.textProperty().bind(getip("time").asString());
     }

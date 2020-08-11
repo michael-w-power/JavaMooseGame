@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Save Data class. Used to store an array of HighScores
+ * Save Data class. Used to store an array of HighScores.
  */
 public class SaveData implements Serializable {
     private static final long serialVersionUID = 1L;

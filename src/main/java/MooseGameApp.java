@@ -21,7 +21,7 @@ import static com.almasb.fxgl.dsl.FXGL.*;
  * Main game loop app for Moose on the Loose. This class is responsible for setting the game's settings,
  * its ui, its controls, its entities, its physics, as well as saving and loading highscore data.
  */
-public class MooseGameApp extends GameApplication {
+public class MooseGameApp extends GameApplication{
     private Entity player;
     private Entity background1;
     private Entity background2;
@@ -32,7 +32,6 @@ public class MooseGameApp extends GameApplication {
     private String highScoreName;
     private ArrayList<HighScore> highScoreList;
 
-
     /**
      * Initializes the game settings
      * @param settings
@@ -42,7 +41,7 @@ public class MooseGameApp extends GameApplication {
         settings.setWidth(600);
         settings.setHeight(900);
         settings.setTitle("MooseGame");
-        settings.setVersion("0.3");
+        settings.setVersion("1.0");
         settings.setMenuEnabled(true);
         settings.setSceneFactory(new SceneFactory(){
             @Override
@@ -57,7 +56,7 @@ public class MooseGameApp extends GameApplication {
      * @param vars vars
      */
     @Override
-    protected void initGameVars(Map<String, Object> vars) {
+    protected void initGameVars(Map<String, Object> vars){
         vars.put("score", 0);
         vars.put("time",60);
         vars.put("speed",150);

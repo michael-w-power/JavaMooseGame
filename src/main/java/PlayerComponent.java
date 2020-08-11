@@ -23,18 +23,21 @@ public class PlayerComponent extends Component {
     public void moveLeft() {
         entity.translate(-2.5,0);
     }
+
     /**
      * Moves the player right.
      */
     public void moveRight() {
         entity.translate(2.5,0);
     }
+
     /**
      * Moves the player up.
      */
     public void moveUp(){
         entity.translate(0,-2.5);
     }
+
     /**
      * Moves the player down.
      */
