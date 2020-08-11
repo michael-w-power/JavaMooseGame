@@ -104,7 +104,7 @@ public class MooseGameApp extends GameApplication {
 
         getFileSystemService().<SaveData>readDataTask("./highscores.dat")
                 .onSuccess(data -> saveData = data)
-                .onFailure(error->{error.printStackTrace();})
+                .onFailure(ignore->{})
                 .run();
         if (saveData == null){
             saveData = new SaveData(new ArrayList<HighScore>());
@@ -159,34 +159,29 @@ public class MooseGameApp extends GameApplication {
 
         onCollisionBegin(EntityType.PLAYER,EntityType.POTHOLE, (player, pothole) -> {
             pothole.removeFromWorld();
+
             if (getWorldProperties().getInt("speed")==75){
-                FXGL.getWorldProperties().increment("score", -50);
-            }
-            else if (getWorldProperties().getInt("speed")==150){
                 FXGL.getWorldProperties().increment("score", -100);
             }
+            else if (getWorldProperties().getInt("speed")==150){
+                FXGL.getWorldProperties().increment("score", -200);
+            }
             else if (getWorldProperties().getInt("speed")==225){
-                FXGL.getWorldProperties().increment("score", -150);
+                FXGL.getWorldProperties().increment("score", -300);
             }
         });
 
         onCollisionBegin(EntityType.PLAYER,EntityType.LEFTMOOSE, (player, moose) -> {
-            moose.removeFromWorld();
-            //FXGL.getWorldProperties().increment("score", -1000);
             gameOver();
         });
 
         onCollisionBegin(EntityType.PLAYER,EntityType.RIGHTMOOSE, (player, moose) -> {
-            moose.removeFromWorld();
-            //FXGL.getWorldProperties().increment("score", -1000);
             gameOver();
 
         });
 
         onCollisionBegin(EntityType.PLAYER,EntityType.SIGNPOST, (player, signpost) -> {
-            //FXGL.getWorldProperties().increment("score", -1000);
             gameOver();
-
         });
     }
 
@@ -219,9 +214,62 @@ public class MooseGameApp extends GameApplication {
         if (background2.getY() >= 1350){
             background2.setY(background2.getY()-2700);
         }
-
+        int score = FXGL.getWorldProperties().getInt("score");
         if (FXGL.getWorldProperties().getInt("time")<=0){
-            getDialogService().showMessageBox("You win!! Press OK to return to menu", getGameController()::gotoMainMenu);
+            getDialogService().showConfirmationBox("You made it through to Clarenville!\nPlay Again?", yes -> {
+                if (yes) {
+                    getGameWorld().getEntitiesCopy().forEach(Entity::removeFromWorld);
+                    if (score > highScoreList.get(highScoreList.size()-1).getScore()) {
+                        getDialogService().showInputBox("High Score! Enter your name\n"+
+                                        "1.\t" + highScoreList.get(0).getName() +"\t\t\t" + Integer.toString(highScoreList.get(0).getScore())+"\n"+
+                                        "2.\t" + highScoreList.get(1).getName() +"\t\t\t" + Integer.toString(highScoreList.get(1).getScore())+"\n"+
+                                        "3.\t" + highScoreList.get(2).getName() +"\t\t\t" + Integer.toString(highScoreList.get(2).getScore()),
+                                playerName -> {
+                                    for (int i = 0; i < highScoreList.size(); i++) {
+                                        if (score > highScoreList.get(i).getScore()) {
+                                            highScoreList.add(i, new HighScore(playerName, score));
+                                            highScoreList.sort(new sortHighScores());
+                                            highScoreList.remove(highScoreList.size() - 1);
+                                            break;
+                                        }
+                                    }
+                                    getFileSystemService().writeDataTask(new SaveData(highScoreList), "./highscores.dat").run();
+                                    getGameController().startNewGame();
+                                });
+                    }else{
+                        getDialogService().showMessageBox("High Scores:\n"+
+                                "1.\t" + highScoreList.get(0).getName() +"\t\t\t" + highScoreList.get(0).getScore()+"\n"+
+                                "2.\t" + highScoreList.get(1).getName() +"\t\t\t" + highScoreList.get(1).getScore()+"\n"+
+                                "3.\t" + highScoreList.get(2).getName() +"\t\t\t" + highScoreList.get(2).getScore(),getGameController()::startNewGame);
+                    }
+
+                } else {
+                    if (score > highScoreList.get(highScoreList.size()-1).getScore()) {
+                        getDialogService().showInputBox("High Score! Enter your name\n"+
+                                        "1.\t" + highScoreList.get(0).getName() +"\t\t\t" + Integer.toString(highScoreList.get(0).getScore())+"\n"+
+                                        "2.\t" + highScoreList.get(1).getName() +"\t\t\t" + Integer.toString(highScoreList.get(1).getScore())+"\n"+
+                                        "3.\t" + highScoreList.get(2).getName() +"\t\t\t" + Integer.toString(highScoreList.get(2).getScore()),
+                                playerName -> {
+
+                                    for (int i = 0; i < highScoreList.size(); i++) {
+                                        if (score > highScoreList.get(i).getScore()){
+                                            highScoreList.add(i,new HighScore(playerName,score));
+                                            highScoreList.sort(new sortHighScores());
+                                            highScoreList.remove(highScoreList.size()-1);
+                                            break;
+                                        }
+                                    }
+                                    getFileSystemService().writeDataTask(new SaveData(highScoreList), "./highscores.dat").run();
+                                    getGameController().gotoMainMenu();
+                                });
+                    } else {
+                        getDialogService().showMessageBox("High Scores:\n"+
+                                "1.\t" + highScoreList.get(0).getName() +"\t\t\t" + Integer.toString(highScoreList.get(0).getScore())+"\n"+
+                                "2.\t" + highScoreList.get(1).getName() +"\t\t\t" + Integer.toString(highScoreList.get(1).getScore())+"\n"+
+                                "3.\t" + highScoreList.get(2).getName() +"\t\t\t" + Integer.toString(highScoreList.get(2).getScore()),getGameController()::gotoMainMenu);
+                    }
+                }
+            });
         }
     }
 
@@ -265,6 +313,9 @@ public class MooseGameApp extends GameApplication {
                                 getFileSystemService().writeDataTask(new SaveData(highScoreList), "./highscores.dat").run();
                                 getGameController().startNewGame();
                             });
+                }
+                else{
+                    getGameController().startNewGame();
                 }
             } else {
                 if (score > highScoreList.get(highScoreList.size()-1).getScore()) {

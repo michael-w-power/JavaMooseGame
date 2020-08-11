@@ -10,9 +10,11 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -26,20 +28,58 @@ public class MooseGameMenu extends FXGLMenu {
     private Node mainMenuScreen;
     private Node leaderboardScreen;
     private StackPane carSelectionScreen;
+    private Node creditsScreen;
     private Music bgm;
     private static String car = "assets/textures/car0.png";
     private SaveData savedData = null;
-
-
-
 
     public MooseGameMenu() {
         super(MenuType.MAIN_MENU);
         mainMenuScreen = createMainMenu();
         showMainMenu();
         carSelectionScreen = carSelectionMenu();
+        creditsScreen = createCredits();
         bgm = getAssetLoader().loadMusic("Poisoncut_-_MenuMusic.mp3");
         getAudioPlayer().loopMusic(bgm);
+    }
+
+    private Node createCredits(){
+        StackPane pane = new StackPane();
+        pane.setPrefSize(600,900);
+        pane.setAlignment(Pos.CENTER);
+
+        MooseButton backButton = new MooseButton("Back", this::showMainMenu);
+        backButton.setBackground(new Background(new BackgroundFill(BLACK, null, null)));
+        backButton.setPadding(new Insets(25));
+        backButton.setMaxWidth(0);
+
+        MooseGameMenuTitle title = new MooseGameMenuTitle("Credits");
+
+        Text credits = new Text("Micheal Power\n\nJoshua Newman\n\nTyler Tobin");
+        credits.setFill(GRAY);
+        credits.setFont(Font.font("deriveFont", FontWeight.EXTRA_BOLD, 35));
+
+        VBox backButtonBox = new VBox (backButton);
+        VBox titleBox = new VBox(title);
+        VBox creditsBox = new VBox(credits);
+        titleBox.setBackground(new Background(new BackgroundFill(BLACK, null, null)));
+        titleBox.setPadding(new Insets(10));
+        titleBox.setMaxWidth(0);
+        titleBox.setMaxHeight(0);
+        titleBox.setTranslateX(0);
+        titleBox.setTranslateY(-250);
+
+        creditsBox.setBackground(new Background(new BackgroundFill(BLACK, null, null)));
+        creditsBox.setPadding(new Insets(75,25,75,25));
+        creditsBox.setTranslateY(50);
+        creditsBox.setTranslateX(15);
+        creditsBox.setMaxWidth(0);
+        creditsBox.setMaxHeight(0);
+
+        pane.getChildren().add(backButtonBox);
+        pane.getChildren().add(titleBox);
+        pane.getChildren().add(creditsBox);
+        return pane;
     }
 
     private StackPane leaderboardMenu(){
@@ -56,6 +96,7 @@ public class MooseGameMenu extends FXGLMenu {
             System.out.println("new save data");
         }
 
+        VBox scoreBox = new VBox();
         StackPane pane = new StackPane();
         pane.setPrefSize(600,900);
         pane.setAlignment(Pos.CENTER);
@@ -69,12 +110,42 @@ public class MooseGameMenu extends FXGLMenu {
         ArrayList<HighScore> highScores = savedData.getHighScoreList();
         int y = 0;
         for (int i = 0; i < highScores.size(); i++) { ;
-            Text text = new Text((i+1)+".\t" + highScores.get(i).getName() +"\t\t\t" + Integer.toString(highScores.get(i).getScore()));
-            text.setTranslateY(y);
+            Text textName = new Text((i+1)+". " + highScores.get(i).getName());
+            Text textHighScore = new Text("Score: " + Integer.toString(highScores.get(i).getScore()) + "\n" +"--------------------");
+            textName.setFill(GRAY);
+            textHighScore.setFill(GRAY);
+            textName.setFont(Font.font("deriveFont", FontWeight.EXTRA_BOLD, 35));
+            textHighScore.setFont(Font.font("deriveFont", FontWeight.EXTRA_BOLD, 35));
+
+            VBox textNameBox = new VBox(textName);
+            VBox textHighScoreBox = new VBox(textHighScore);
+
+            //textNameBox.setTranslateY(y);
+            //textHighScoreBox.setTranslateY(y);
             y+=10;
-            pane.getChildren().add(text);
+            //textHighScoreBox.setTranslateX(300);
+            //textNameBox.setTranslateX(0);
+            scoreBox.setAlignment(Pos.CENTER_LEFT);
+            scoreBox.getChildren().add(textNameBox);
+            scoreBox.getChildren().add(textHighScoreBox);
         }
+
+        MooseGameMenuTitle title = new MooseGameMenuTitle("Leaderboard");
+        VBox titleBox = new VBox(title);
+        titleBox.setBackground(new Background(new BackgroundFill(BLACK, null, null)));
+        titleBox.setPadding(new Insets(10));
+        titleBox.setMaxWidth(0);
+        titleBox.setMaxHeight(0);
+        titleBox.setTranslateX(0);
+        titleBox.setTranslateY(-300);
+
+        scoreBox.setBackground(new Background(new BackgroundFill(BLACK, null, null)));
+        scoreBox.setPadding(new Insets(0,10,0,10));
+        scoreBox.setMaxWidth(0);
+        scoreBox.setMaxHeight(500);
         pane.getChildren().add(box);
+        pane.getChildren().add(titleBox);
+        pane.getChildren().add(scoreBox);
         return pane;
     }
 
@@ -82,14 +153,13 @@ public class MooseGameMenu extends FXGLMenu {
         MooseButton playButton = new MooseButton("Play Game", () -> {fireNewGame();getAudioPlayer().stopMusic(bgm);});
         MooseButton leaderboardButton = new MooseButton("Leaderboard", () -> showLeaderBoardMenu());
         MooseButton carSelectionButton = new MooseButton("Car Selection", () -> showSelectionMenu());
-        MooseButton creditButton = new MooseButton("Credits", () -> {fireNewGame();getAudioPlayer().stopMusic(bgm);});
+        MooseButton creditButton = new MooseButton("Credits", () -> {showCredits();getAudioPlayer().stopMusic(bgm);});
         MooseButton quitButton = new MooseButton("Exit Game", this::fireExit);
 
         MooseGameMenuTitle title = new MooseGameMenuTitle("Moose On The Loose");
 
         var box = new VBox(15, playButton, leaderboardButton, carSelectionButton, creditButton, quitButton);
         var titleBox = new VBox (title);
-
 
         titleBox.setTranslateX(30);
         titleBox.setTranslateY(200);
@@ -112,6 +182,11 @@ public class MooseGameMenu extends FXGLMenu {
 //        getContentRoot().getChildren().add(0, bg);
         getMenuContentRoot().getChildren().clear();
         getMenuContentRoot().getChildren().addAll(mainMenuScreen);
+    }
+
+    private void showCredits(){
+        getMenuContentRoot().getChildren().clear();
+        getMenuContentRoot().getChildren().addAll(creditsScreen);
     }
 
     private void showSelectionMenu(){
