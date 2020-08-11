@@ -1,6 +1,9 @@
 import java.io.Serializable;
 import java.util.Comparator;
 
+/**
+ * Highscore class, used to save score and name to the highscore list.
+ */
 public class HighScore implements Serializable {
     private static final long serialVersionUID = 1L;
     private final String name;
