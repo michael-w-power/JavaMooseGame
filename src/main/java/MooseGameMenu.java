@@ -14,7 +14,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -219,7 +218,6 @@ public class MooseGameMenu extends FXGLMenu {
         box.setPrefSize(600, 900);
 
         MooseButton backButton = new MooseButton("Back", this::showMainMenu);
-        //backButton.setOnAction((event) -> {showMainMenu();});
         backButton.setBackground(new Background(new BackgroundFill(BLACK, null, null)));
         backButton.setPadding(new Insets(25));
         backButton.setMaxWidth(0);
@@ -236,7 +234,6 @@ public class MooseGameMenu extends FXGLMenu {
 
 
         MooseButton prevCarButton = new MooseButton("Prev Car", this::prevCar);
-        //prevCarButton.setOnAction((event) -> { prevCar();});
         var prevCarBox = new VBox(15, prevCarButton);
         prevCarBox.setTranslateX(50);
         prevCarBox.setTranslateY(260);
@@ -247,7 +244,6 @@ public class MooseGameMenu extends FXGLMenu {
 
 
         MooseButton nextCarButton = new MooseButton("Next Car", this::nextCar);
-        //nextCarButton.setOnAction((event) -> { nextCar();});
         var nextCarBox = new VBox(0, nextCarButton);
         nextCarBox.setTranslateX(400);
         nextCarBox.setTranslateY(180);
@@ -265,7 +261,6 @@ public class MooseGameMenu extends FXGLMenu {
 
         pane.getChildren().add(carViewBackground);
         pane.getChildren().add(carView);
-        //pane.getChildren().add(carViewBackground);
 
         return pane;
     }

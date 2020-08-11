@@ -5,7 +5,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-
 import static com.almasb.fxgl.dsl.FXGL.*;
 import static javafx.scene.paint.Color.GRAY;
 import static javafx.scene.paint.Color.WHITE;

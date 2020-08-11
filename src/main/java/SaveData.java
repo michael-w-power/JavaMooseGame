@@ -1,5 +1,3 @@
-import com.almasb.fxgl.core.collection.Array;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;

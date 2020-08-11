@@ -1,12 +1,9 @@
-import com.almasb.fxgl.ui.ProgressBar;
 import com.almasb.fxgl.ui.UIController;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
-import static com.almasb.fxgl.dsl.FXGL.getUIFactoryService;
 import static com.almasb.fxgl.dsl.FXGL.getip;
 
 /**

@@ -1,5 +1,4 @@
 import java.io.Serializable;
-import java.util.Comparator;
 
 /**
  * Highscore class, used to save score and name to the highscore list.
