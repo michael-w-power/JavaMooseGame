@@ -42,6 +42,7 @@ public class MooseGameMenu extends FXGLMenu {
         super(MenuType.MAIN_MENU);
         mainMenuScreen = createMainMenu();
         showMainMenu();
+        carSelectionScreen = carSelectionMenu();
         bgm = getAssetLoader().loadMusic("Poisoncut_-_MenuMusic.mp3");
         getAudioPlayer().loopMusic(bgm);
     }
@@ -193,7 +194,6 @@ public class MooseGameMenu extends FXGLMenu {
     }
 
     private void showSelectionMenu(){
-        carSelectionScreen = carSelectionMenu();
         getMenuContentRoot().getChildren().clear();
         getMenuContentRoot().getChildren().addAll(carSelectionScreen);
     }
