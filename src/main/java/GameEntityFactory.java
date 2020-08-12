@@ -68,7 +68,7 @@ public class GameEntityFactory implements EntityFactory {
         return entityBuilder()
                 .type(EntityType.SIGNPOST)
                 .at(getAppWidth()-125,100)
-                .viewWithBBox("signpost.PNG")
+                .viewWithBBox("signpost.png")
                 .collidable()
                 .build();
     }
@@ -83,7 +83,7 @@ public class GameEntityFactory implements EntityFactory {
         return entityBuilder()
                 .type(EntityType.POTHOLE)
                 .at(FXGLMath.random(75,getAppWidth()-150),-100)
-                .viewWithBBox("potHole.PNG")
+                .viewWithBBox("pothole.png")
                 .scale(0.6,0.6)
                 .with(new PotHoleComponent())
                 .collidable()
