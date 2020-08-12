@@ -1,0 +1,98 @@
+15:10:08.774 [main                     ] DEBUG GameApplication      - Logger initialized
+15:10:08.778 [main                     ] DEBUG GameApplication      - Logging settings
+Title: MooseGame
+Version: 1.0
+Width: 600
+Height: 900
+Fullscreen: false
+Intro: false
+Menus: true
+Profiling: false
+Single step:false
+App Mode: DEVELOPER
+Menu Key: ESCAPE
+Stage Style: DECORATED
+Scene Factory: class MooseGameApp$1
+
+15:10:09.129 [JavaFX Application Thread] DEBUG GameApplication      - Initializing FXGL
+15:10:09.137 [JavaFX Application Thread] INFO  Engine               - FXGL-11.8 (08.03.2020 09.09) on WINDOWS (J:14.0.1 FX:13.0.2)
+15:10:09.137 [JavaFX Application Thread] INFO  Engine               - Source code and latest versions at: https://github.com/AlmasB/FXGL
+15:10:09.137 [JavaFX Application Thread] INFO  Engine               -              Join the FXGL chat at: https://gitter.im/AlmasB/FXGL
+15:10:09.244 [JavaFX Application Thread] DEBUG MainWindow           - Creating a JavaFX scene
+15:10:09.289 [JavaFX Application Thread] DEBUG MainWindow           - Target settings size: 600.0 x 900.0
+15:10:09.289 [JavaFX Application Thread] DEBUG MainWindow           - Scaled scene size:    600.0 x 900.0
+15:10:09.289 [JavaFX Application Thread] DEBUG MainWindow           - Scaled ratio: (1.0, 1.0)
+15:10:09.291 [JavaFX Application Thread] DEBUG MainWindow           - Set initial scene to FXGLStartupScene
+15:10:09.296 [JavaFX Application Thread] DEBUG MainWindow           - Opening main window
+15:10:09.376 [JavaFX Application Thread] DEBUG MainWindow           - Window border size: (16.0, 39.0)
+15:10:09.376 [JavaFX Application Thread] DEBUG MainWindow           - Scaled size: 600.0 x 900.0
+15:10:09.376 [JavaFX Application Thread] DEBUG MainWindow           - Scaled ratio: (1.0, 1.0)
+15:10:09.376 [JavaFX Application Thread] DEBUG MainWindow           - Scene size: 600.0 x 900.0
+15:10:09.376 [JavaFX Application Thread] DEBUG MainWindow           - Stage size: 616.0 x 939.0
+15:10:09.383 [FXGL Background Thread 1 ] DEBUG Engine               - Initializing environment variables
+15:10:09.409 [FXGL Background Thread 1 ] DEBUG WindowService        - Applying CSS: fxgl_dark.css
+15:10:09.410 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from file system: /assets/ui/css/fxgl_dark.css
+15:10:09.448 [FXGL Background Thread 1 ] DEBUG WindowService        - Initializing application scenes
+15:10:09.477 [FXGL Background Thread 1 ] DEBUG GameWorld            - Game world initialized
+15:10:09.510 [FXGL Background Thread 1 ] DEBUG PhysicsWorld         - Physics world initialized: appHeight=900, physics.ppm=50.0
+15:10:09.512 [FXGL Background Thread 1 ] DEBUG GameScene            - Game scene initialized: 600x900
+15:10:09.519 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from file system: /assets/textures/Roadway.png
+15:10:09.585 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from file system: /assets/sounds/selection.mp3
+15:10:09.652 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from cache: /assets/sounds/selection.mp3
+15:10:09.652 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from cache: /assets/sounds/selection.mp3
+15:10:09.652 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from cache: /assets/sounds/selection.mp3
+15:10:09.653 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from cache: /assets/sounds/selection.mp3
+15:10:09.666 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from cache: /assets/sounds/selection.mp3
+15:10:09.668 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from cache: /assets/sounds/selection.mp3
+15:10:09.668 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from cache: /assets/sounds/selection.mp3
+15:10:09.671 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from cache: /assets/sounds/selection.mp3
+15:10:09.672 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from file system: /assets/music/Poisoncut_-_MenuMusic.mp3
+15:10:09.726 [FXGL Background Thread 1 ] DEBUG AudioPlayer          - Playing music com.almasb.fxgl.audio.Music@24023790
+15:10:09.743 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from file system: /assets/textures/particles/trace_horizontal.png
+15:10:09.776 [FXGL Background Thread 1 ] WARN  FXGL.DefaultMenu     - FXGLDefaultMenu is not designed for resolutions < 800x600
+15:10:09.777 [FXGL Background Thread 1 ] DEBUG FXGL.DefaultMenu     - createMenuBodyGameMenu()
+15:10:09.787 [FXGL Background Thread 1 ] DEBUG FXGL.DefaultMenu     - createOptionsMenu()
+15:10:09.790 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from file system: /assets/textures/particles/smoke.png
+15:10:09.827 [FXGL Background Thread 1 ] DEBUG WindowService        - Application scenes initialized
+15:10:09.833 [FXGL Background Thread 1 ] DEBUG SystemBundleService  - Loading FXGL system data
+15:10:09.836 [FXGL Background Thread 1 ] DEBUG FileSystemAccess     - Reading from: C:\Users\micha\Desktop\JavaMooseGame\system\fxgl.bundle
+15:10:09.840 [FXGL Background Thread 1 ] DEBUG SystemBundleService  - Bundle FXGL: {}
+15:10:09.840 [FXGL Background Thread 1 ] INFO  Engine               - FXGL initialization took: 0.455 sec
+15:10:09.841 [FXGL Background Thread 1 ] DEBUG GameApplication      - Loading localizations
+15:10:09.841 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from file system: /assets/properties/languages/english.properties
+15:10:09.843 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from file system: /assets/properties/languages/french.properties
+15:10:09.843 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from file system: /assets/properties/languages/german.properties
+15:10:09.844 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from file system: /assets/properties/languages/hungarian.properties
+15:10:09.845 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from file system: /assets/properties/languages/russian.properties
+15:10:09.846 [FXGL Background Thread 1 ] DEBUG GameApplication      - Registering font factories with UI factory
+15:10:09.846 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from file system: /assets/ui/fonts/VarelaRound-Regular.ttf
+15:10:09.889 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from file system: /assets/ui/fonts/Abel-Regular.ttf
+15:10:09.898 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from file system: /assets/ui/fonts/lucida_console.ttf
+15:10:09.907 [FXGL Background Thread 1 ] DEBUG AssetLoaderService   - Loading from file system: /assets/ui/fonts/Courier-Prime.ttf
+15:10:09.922 [JavaFX Application Thread] DEBUG Input                - Registered new binding: action0 - A
+15:10:09.922 [JavaFX Application Thread] DEBUG Input                - Registered new binding: action1 - S
+15:10:09.922 [JavaFX Application Thread] DEBUG Input                - Registered new binding: action2 - D
+15:10:09.922 [JavaFX Application Thread] DEBUG Input                - Registered new binding: action3 - W
+15:10:09.923 [JavaFX Application Thread] DEBUG Input                - Registered new binding: action4 - 1
+15:10:09.923 [JavaFX Application Thread] DEBUG Input                - Registered new binding: action5 - 2
+15:10:09.923 [JavaFX Application Thread] DEBUG Input                - Registered new binding: action6 - 3
+15:10:09.923 [JavaFX Application Thread] DEBUG Input                - Registered new binding: action7 - Left
+15:10:09.923 [JavaFX Application Thread] DEBUG Input                - Registered new binding: action8 - Down
+15:10:09.923 [JavaFX Application Thread] DEBUG Input                - Registered new binding: action9 - Right
+15:10:09.924 [JavaFX Application Thread] DEBUG Input                - Registered new binding: action10 - Up
+15:10:09.924 [JavaFX Application Thread] DEBUG AssetLoaderService   - Loading from file system: /assets/textures/fxgl_icon.png
+15:10:09.932 [JavaFX Application Thread] DEBUG AssetLoaderService   - Loading from file system: /assets/ui/cursors/fxgl_default.png
+15:10:09.933 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Screenshot - P
+15:10:09.934 [JavaFX Application Thread] DEBUG Input                - Registered new binding: System info dump - CTRL+9
+15:10:09.934 [JavaFX Application Thread] DEBUG Input                - Registered new binding: Restart - CTRL+R
+15:10:09.934 [JavaFX Application Thread] DEBUG LoopRunner           - Starting loop
+15:10:09.953 [JavaFX Application Thread] DEBUG FXGLStartupScene     - STARTUP
+15:10:09.954 [JavaFX Application Thread] DEBUG Input                - Clearing active input actions
+15:10:09.966 [JavaFX Application Thread] DEBUG WindowService        - Removing overlay from FXGLStartupScene and adding to MooseGameMenu
+15:10:09.967 [JavaFX Application Thread] DEBUG MainWindow           - FXGLStartupScene -> MooseGameMenu
+15:10:11.174 [JavaFX Application Thread] DEBUG GameApplication      - Exiting FXGL
+15:10:11.174 [JavaFX Application Thread] DEBUG LoopRunner           - Stopping loop
+15:10:11.174 [JavaFX Application Thread] DEBUG SystemBundleService  - Saving FXGL system data
+15:10:11.175 [JavaFX Application Thread] DEBUG FileSystemAccess     - Writing to: C:\Users\micha\Desktop\JavaMooseGame\system\fxgl.bundle
+15:10:11.177 [JavaFX Application Thread] DEBUG GameApplication      - Shutting down background threads
+15:10:11.177 [JavaFX Application Thread] DEBUG GameApplication      - Closing logger and exiting JavaFX
