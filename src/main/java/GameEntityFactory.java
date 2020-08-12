@@ -52,7 +52,7 @@ public class GameEntityFactory implements EntityFactory {
         return entityBuilder()
                 .type(EntityType.PLAYER)
                 .from(data)
-                .viewWithBBox(MooseGameMenu.playerCar().substring(15))
+                .viewWithBBox(MooseGameMenu.playerCar().substring(16))
                 .with(new PlayerComponent())
                 .collidable()
                 .build();
