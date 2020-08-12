@@ -32,7 +32,7 @@ public class MooseGameMenu extends FXGLMenu {
     private StackPane carSelectionScreen;
     private Node creditsScreen;
     private Music bgm;
-    private static String car = "assets/textures/car0.png";
+    private static String car = "assets/textures/car0.PNG";
     private SaveData savedData = null;
 
     /**
